@@ -2,11 +2,23 @@
 #include "DataLoader.h"
 #include "Trie.h"
 #include "RBTree.h"
+#include "Benchmark.h"
 using namespace std;
 
 int main() {
     vector<Song> songs = loadSongs("data/dataset.csv");
     cout << "Loaded " << songs.size() << " songs" << endl;
+
+    cout << "1. Search" << endl;
+    cout << "2. Run benchmark" << endl;
+    cout << "Choice: ";
+    string choice;
+    getline(cin, choice);
+
+    if (choice == "2") {
+        runBenchmark(songs);
+        return 0;
+    }
 
     Trie trie;
     RBTree tree;
@@ -38,7 +50,6 @@ int main() {
             cout << s.title << " - " << s.artist << " (" << s.popularity << ")" << endl;
         }
 
-        // check if the popularity numbers match
         bool same = (trieResults.size() == treeResults.size());
         for (int i = 0; i < trieResults.size() && same; i++) {
             if (songs[trieResults[i]].popularity != songs[treeResults[i]].popularity) {

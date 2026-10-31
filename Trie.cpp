@@ -105,7 +105,7 @@ vector<int> Trie::search(string prefix, int n, vector<Song>& songs) {
             if (songs[top[i]].title == songs[pick].title &&
                 songs[top[i]].artist == songs[pick].artist) {
                 alreadyHave = true;
-                }
+            }
         }
         if (!alreadyHave) {
             top.push_back(pick);
@@ -113,4 +113,22 @@ vector<int> Trie::search(string prefix, int n, vector<Song>& songs) {
     }
 
     return top;
+}
+
+void Trie::countNodes(TrieNode* node, long long& nodes, long long& indexes) {
+    if (node == nullptr) {
+        return;
+    }
+    nodes++;
+    indexes += node->songIndexes.size();
+    countNodes(node->firstChild, nodes, indexes);
+    countNodes(node->nextSibling, nodes, indexes);
+}
+
+// estimate: size of every node plus the song index numbers stored in them
+long long Trie::memoryUsed() {
+    long long nodes = 0;
+    long long indexes = 0;
+    countNodes(root, nodes, indexes);
+    return nodes * sizeof(TrieNode) + indexes * sizeof(int);
 }

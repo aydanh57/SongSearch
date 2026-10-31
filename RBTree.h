@@ -32,12 +32,14 @@ private:
     void fixInsert(RBNode* node);
     void collect(RBNode* node, string prefix, vector<int>& results);
     void destroy(RBNode* node);
+    void countNodes(RBNode* node, long long& nodes, long long& extra);
 
 public:
     RBTree();
     ~RBTree();
     void insert(string title, int songIndex);
     vector<int> search(string prefix, int n, vector<Song>& songs);
+    long long memoryUsed();
 };
 
 #endif

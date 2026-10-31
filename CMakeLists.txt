@@ -3,4 +3,4 @@ project(SongSearch)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(SongSearch main.cpp DataLoader.cpp Trie.cpp RBTree.cpp)
+add_executable(SongSearch main.cpp DataLoader.cpp Trie.cpp RBTree.cpp Benchmark.cpp)

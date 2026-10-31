@@ -11,7 +11,7 @@ struct TrieNode {
     TrieNode* firstChild;
     TrieNode* nextSibling;
     bool isEnd;
-    vector<int> songIndexes;
+    vector<int> songIndexes; // can hold several songs with the same title
 
     TrieNode(char c) {
         letter = c;
@@ -22,15 +22,18 @@ struct TrieNode {
 };
 
 class Trie {
+private:
     TrieNode* root;
     void collect(TrieNode* node, vector<int>& results);
     void destroy(TrieNode* node);
+    void countNodes(TrieNode* node, long long& nodes, long long& indexes);
 
 public:
     Trie();
     ~Trie();
     void insert(string title, int songIndex);
     vector<int> search(string prefix, int n, vector<Song>& songs);
+    long long memoryUsed();
 };
 
 #endif

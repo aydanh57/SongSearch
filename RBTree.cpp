@@ -194,3 +194,23 @@ vector<int> RBTree::search(string prefix, int n, vector<Song>& songs) {
 
     return top;
 }
+
+void RBTree::countNodes(RBNode* node, long long& nodes, long long& extra) {
+    if (node == nullptr) {
+        return;
+    }
+    nodes++;
+    // short strings live inside the string object, long ones need extra space
+    if (node->title.size() > 15) {
+        extra += node->title.size();
+    }
+    countNodes(node->left, nodes, extra);
+    countNodes(node->right, nodes, extra);
+}
+
+long long RBTree::memoryUsed() {
+    long long nodes = 0;
+    long long extra = 0;
+    countNodes(root, nodes, extra);
+    return nodes * sizeof(RBNode) + extra;
+}
