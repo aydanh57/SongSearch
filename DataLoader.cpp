@@ -5,7 +5,8 @@
 #include <cctype>
 using namespace std;
 
-// splits one line of the csv into pieces, keeps commas inside quotes
+// splits one line of the csv into separate fields
+// commas inside quotes are kept as part of the field
 vector<string> splitLine(string line) {
     vector<string> fields;
     string current = "";
@@ -33,6 +34,7 @@ vector<string> splitLine(string line) {
     return fields;
 }
 
+// returns a copy of s with every letter changed to lowercase
 string makeLower(string s) {
     for (int i = 0; i < s.size(); i++) {
         s[i] = tolower(s[i]);
@@ -40,6 +42,10 @@ string makeLower(string s) {
     return s;
 }
 
+// opens the csv, finds the track_name, artists, and popularity columns
+// from the header, and makes a Song for each valid row
+// rows with a missing title or a bad popularity number are skipped
+// returns an empty vector if the file can't be opened
 vector<Song> loadSongs(string path) {
     vector<Song> songs;
     ifstream file(path);

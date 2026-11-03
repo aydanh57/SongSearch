@@ -7,7 +7,7 @@
 using namespace std;
 using namespace chrono;
 
-// turns whatever the user typed into lowercase since titles are lowercase
+// returns the user's input in lowercase to match the stored titles
 string lowerCase(string s) {
     for (int i = 0; i < s.size(); i++) {
         s[i] = tolower(s[i]);
@@ -15,6 +15,7 @@ string lowerCase(string s) {
     return s;
 }
 
+// prints the numbered list of songs for a set of results, or "No matches"
 void printResults(vector<int>& results, vector<Song>& songs) {
     if (results.size() == 0) {
         cout << "No matches" << endl;
@@ -26,6 +27,8 @@ void printResults(vector<int>& results, vector<Song>& songs) {
     }
 }
 
+// loads the songs, builds the trie and red-black tree once, then
+// shows a menu to search, switch structures, compare both, or run the benchmark
 int main() {
     vector<Song> songs = loadSongs("data/dataset.csv");
     cout << "Loaded " << songs.size() << " songs" << endl;

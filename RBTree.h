@@ -6,6 +6,8 @@
 #include "Song.h"
 using namespace std;
 
+// one node in the red-black tree, holds a song title and its position in the songs vector
+// isRed is the node's color, used to keep the tree balanced
 struct RBNode {
     string title;
     int songIndex;
@@ -24,6 +26,8 @@ struct RBNode {
     }
 };
 
+// red-black tree that keeps song titles in sorted order and stays balanced
+// so inserts take O(log n) steps
 class RBTree {
 private:
     RBNode* root;

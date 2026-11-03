@@ -1,14 +1,17 @@
 #include "RBTree.h"
 using namespace std;
 
+// makes an empty tree
 RBTree::RBTree() {
     root = nullptr;
 }
 
+// frees all the memory used by the tree
 RBTree::~RBTree() {
     destroy(root);
 }
 
+// deletes a node and both of its subtrees
 void RBTree::destroy(RBNode* node) {
     if (node == nullptr) {
         return;
@@ -18,6 +21,8 @@ void RBTree::destroy(RBNode* node) {
     delete node;
 }
 
+// moves x down to the left and its right child up into x's place
+// used to rebalance the tree after an insert
 void RBTree::rotateLeft(RBNode* x) {
     RBNode* y = x->right;
 
@@ -42,6 +47,7 @@ void RBTree::rotateLeft(RBNode* x) {
     x->parent = y;
 }
 
+// mirror image of rotateLeft: moves x down to the right and its left child up
 void RBTree::rotateRight(RBNode* x) {
     RBNode* y = x->left;
 
@@ -63,6 +69,9 @@ void RBTree::rotateRight(RBNode* x) {
     x->parent = y;
 }
 
+// adds a title like a normal binary search tree (equal titles go right),
+// then calls fixInsert to restore the red-black rules
+// worst case O(L * log n) for title length L and n songs
 void RBTree::insert(string title, int songIndex) {
     RBNode* newNode = new RBNode(title, songIndex);
 
@@ -90,6 +99,11 @@ void RBTree::insert(string title, int songIndex) {
     fixInsert(newNode);
 }
 
+// fixes any red-black rule broken by an insert (a red node with a red parent)
+// case 1: red uncle, recolor and move up
+// case 2: node is an inside child, rotate it to the outside
+// case 3: node is an outside child, recolor and rotate the grandparent
+// the root is always set to black at the end
 void RBTree::fixInsert(RBNode* node) {
     // only a problem if the parent is also red
     while (node != root && node->parent->isRed) {
@@ -141,7 +155,9 @@ void RBTree::fixInsert(RBNode* node) {
     root->isRed = false; // root is always black
 }
 
-// goes through the tree in order but skips parts that can't match
+// finds every title that starts with prefix
+// compares the start of each title to the prefix and skips any side
+// of the tree that can't contain a match
 void RBTree::collect(RBNode* node, string prefix, vector<int>& results) {
     if (node == nullptr) {
         return;
@@ -164,6 +180,9 @@ void RBTree::collect(RBNode* node, string prefix, vector<int>& results) {
     }
 }
 
+// returns the indexes of up to n songs whose titles start with prefix,
+// sorted from most popular to least popular
+// works the same way as Trie::search so the results can be compared
 vector<int> RBTree::search(string prefix, int n, vector<Song>& songs) {
     vector<int> top;
     vector<int> results;
@@ -195,6 +214,7 @@ vector<int> RBTree::search(string prefix, int n, vector<Song>& songs) {
     return top;
 }
 
+// counts the nodes below this one and the extra space used by long titles
 void RBTree::countNodes(RBNode* node, long long& nodes, long long& extra) {
     if (node == nullptr) {
         return;
@@ -208,6 +228,8 @@ void RBTree::countNodes(RBNode* node, long long& nodes, long long& extra) {
     countNodes(node->right, nodes, extra);
 }
 
+// estimates memory in bytes: node count times node size plus long title storage
+// this is an estimate, not an exact measurement
 long long RBTree::memoryUsed() {
     long long nodes = 0;
     long long extra = 0;

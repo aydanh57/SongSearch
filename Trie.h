@@ -6,6 +6,9 @@
 #include "Song.h"
 using namespace std;
 
+// one node in the trie, stores a single letter
+// children are kept as a linked list (firstChild, then nextSibling)
+// songIndexes holds the positions of songs whose title ends at this node
 struct TrieNode {
     char letter;
     TrieNode* firstChild;
@@ -13,6 +16,8 @@ struct TrieNode {
     bool isEnd;
     vector<int> songIndexes; // can hold several songs with the same title
 
+    // trie that stores song titles letter by letter so we can quickly find
+    // every title that starts with a given prefix
     TrieNode(char c) {
         letter = c;
         firstChild = nullptr;
